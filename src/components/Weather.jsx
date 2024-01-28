@@ -102,6 +102,7 @@ const Weather = () => {
             iconImg.src = iconUrl
 
 
+            //  Weather Description and Temperature
             const City = document.getElementById("city");
             const dateDay = document.getElementById('date')
             const dateTime = document.getElementById('time')
@@ -131,6 +132,65 @@ const Weather = () => {
             Visibility.innerHTML = `${(oneData.current.visibility) / 1000} KM`;
             SunriseTime.innerHTML = new Date(data.sys.sunrise * 1000).toLocaleTimeString();
 
+            // Hourly Forcast Time
+            let timePhase1 = (getTime(oneData.hourly[2].dt, oneData.timezone_offset));
+            let timePhase2 = (getTime(oneData.hourly[3].dt, oneData.timezone_offset));
+            let timePhase3 = (getTime(oneData.hourly[4].dt, oneData.timezone_offset));
+            let timePhase4 = (getTime(oneData.hourly[5].dt, oneData.timezone_offset));
+            let timePhase5 = (getTime(oneData.hourly[6].dt, oneData.timezone_offset));
+
+            const HourlyTime1 = document.getElementById('hourlyTimeOne');
+            const HourlyTime2 = document.getElementById('hourlyTimeTwo');
+            const HourlyTime3 = document.getElementById('hourlyTimeThree');
+            const HourlyTime4 = document.getElementById('hourlyTimeFour');
+            const HourlyTime5 = document.getElementById('hourlyTimeFive');
+
+            HourlyTime1.innerHTML = timePhase1
+            HourlyTime2.innerHTML = timePhase2
+            HourlyTime3.innerHTML = timePhase3
+            HourlyTime4.innerHTML = timePhase4
+            HourlyTime5.innerHTML = timePhase5
+
+            // Hourly Forcast Icon Image
+            const HourlyIconOne = oneData.hourly[2].weather[0].icon;
+            const HourlyIconUrlOne = `https://openweathermap.org/img/wn/${HourlyIconOne}@2x.png`
+            const hourlyiconImg1 = document.getElementById('hourlyIconImg1');
+            hourlyiconImg1.src = HourlyIconUrlOne
+
+            const HourlyIconTwo = oneData.hourly[3].weather[0].icon;
+            const HourlyIconUrlTwo = `https://openweathermap.org/img/wn/${HourlyIconTwo}@2x.png`
+            const hourlyiconImg2 = document.getElementById('hourlyIconImg2');
+            hourlyiconImg2.src = HourlyIconUrlTwo
+
+            const HourlyIconThree = oneData.hourly[4].weather[0].icon;
+            const HourlyIconUrlThree = `https://openweathermap.org/img/wn/${HourlyIconThree}@2x.png`
+            const hourlyiconImg3 = document.getElementById('hourlyIconImg3');
+            hourlyiconImg3.src = HourlyIconUrlThree
+
+            const HourlyIconOFour = oneData.hourly[5].weather[0].icon;
+            const HourlyIconUrlFour = `https://openweathermap.org/img/wn/${HourlyIconOFour}@2x.png`
+            const hourlyiconImg4 = document.getElementById('hourlyIconImg4');
+            hourlyiconImg4.src = HourlyIconUrlFour
+
+            const HourlyIconOneFive = oneData.hourly[6].weather[0].icon;
+            const HourlyIconUrlFive = `https://openweathermap.org/img/wn/${HourlyIconOneFive}@2x.png`
+            const hourlyiconImg5 = document.getElementById('hourlyIconImg5');
+            hourlyiconImg5.src = HourlyIconUrlFive
+    
+            // Hourly Temprature
+            const HourlyTemp1 = document.getElementById('hourlyTempOne');
+            const HourlyTemp2 = document.getElementById('hourlyTempTwo')
+            const HourlyTemp3 = document.getElementById('hourlyTempThree')
+            const HourlyTemp4 = document.getElementById('hourlyTempFour')
+            const HourlyTemp5 = document.getElementById('hourlyTempFive')
+
+            HourlyTemp1.innerHTML = `${Math.round(oneData.hourly[2].temp)}`
+            HourlyTemp2.innerHTML = `${Math.round(oneData.hourly[3].temp)}`
+            HourlyTemp3.innerHTML = `${Math.round(oneData.hourly[4].temp)}`
+            HourlyTemp4.innerHTML = `${Math.round(oneData.hourly[5].temp)}`
+            HourlyTemp5.innerHTML = `${Math.round(oneData.hourly[6].temp)}`
+
+
         } catch (error) {
             console.log("city not found ");
             alert("city not Found")
@@ -151,7 +211,7 @@ const Weather = () => {
                         <div className="weather">
                             <div className="current-weather">
                                 <h3 className='text-center text-white/[0.9] text-[22px] uppercase font-bold mb-1'>current weather</h3>
-                                <div className="flex justify-between items-center px-6 py-3 bg-white/[0.2] rounded">
+                                <div className="flex justify-between items-center px-6 py-3 bg-white/[0.3] rounded backdrop-blur-sm">
                                     <div className="location text-center">
                                         <h2 className='text-white uppercase text-[18px] font-bold'><span id='city'>berlin</span>, <span id='country'>De</span></h2>
                                         <h3 className='text-white/[0.8] text-[15px] font-[600]' id='date'>Monday, 1 jan</h3>
@@ -167,8 +227,8 @@ const Weather = () => {
                                 </div>
                             </div>
                             <div className="weather-details mt-6">
-                                <h3 className='text-center text-white/[0.9] text-[22px] uppercase font-bold mb-1'>weather details</h3>
-                                <div className="grid grid-cols-4 gap-5 px-6 py-3 bg-white/[0.2] rounded all columns-4">
+                                {/* <h3 className='text-center text-white/[0.9] text-[22px] uppercase font-bold mb-1'>weather details</h3> */}
+                                <div className="grid grid-cols-4 gap-5 px-6 py-3 bg-white/[0.3] rounded all columns-4 backdrop-blur-sm">
                                     <div className="real-feel text-center">
                                         <p className='font-semibold text-[16px] text-white/[0.6]'><span className='pe-1 text-[20px]'><FaTemperatureHalf /></span>Real Feel</p>
                                         <h5 className='text-white font-bold text-[18px]'><span id='weatherFeel'>5</span> &deg;C</h5>
@@ -205,37 +265,32 @@ const Weather = () => {
                             </div>
                             <div className="today-forcast text-center mt-6">
                                 <h3 className='text-center text-white/[0.9] text-[22px] uppercase font-bold'>hourly forcast</h3>
-                                <p className='font-semibold text-[16px] text-white/[0.6]'>6 Available Forcast</p>
-                                <div className="flex gap-3 mt-3">
-                                    <div className="box bg-white/[0.2] rounded-lg py-2 px-6">
-                                        <p className='text-white/[0.6] font-semibold'>06:00</p>
-                                        <img src={Cloud} alt="" />
-                                        <h5 className='text-white font-bold text-lg'>7 C</h5>
+                                {/* <p className='font-semibold text-[16px] text-white/[0.6]'>5 Available Forcast</p> */}
+                                <div className="flex gap-4 mt-3">
+                                    <div className="box bg-white/[0.3] rounded-lg py-2 px-5 backdrop-blur-sm">
+                                        <p className='text-white/[0.6] font-semibold' id='hourlyTimeOne'>01:00 AM</p>
+                                        <img src="https://openweathermap.org/img/wn/02d@2x.png" id='hourlyIconImg1' alt=""/> 
+                                        <h5 className='text-white font-bold text-lg'><span id='hourlyTempOne'>7</span>&deg;C</h5>
                                     </div>
-                                    <div className="box bg-white/[0.2] rounded-lg py-2 px-6">
-                                        <p className='text-white/[0.6] font-semibold'>06:00</p>
-                                        <img src={Cloud} alt="" />
-                                        <h5 className='text-white font-bold text-lg'>7 C</h5>
+                                    <div className="box bg-white/[0.3] rounded-lg py-2 px-5 backdrop-blur-sm">
+                                        <p className='text-white/[0.6] font-semibold' id='hourlyTimeTwo'>02:00 AM</p>
+                                        <img src="https://openweathermap.org/img/wn/02d@2x.png" alt="" id='hourlyIconImg2' />
+                                        <h5 className='text-white font-bold text-lg'><span id='hourlyTempTwo'>7</span>&deg;C</h5>
                                     </div>
-                                    <div className="box bg-white/[0.2] rounded-lg py-2 px-6">
-                                        <p className='text-white/[0.6] font-semibold'>06:00</p>
-                                        <img src={Cloud} alt="" />
-                                        <h5 className='text-white font-bold text-lg'>7 C</h5>
+                                    <div className="box bg-white/[0.3] rounded-lg py-2 px-5 backdrop-blur-sm">
+                                        <p className='text-white/[0.6] font-semibold' id='hourlyTimeThree'>03:00 AM</p>
+                                        <img src="https://openweathermap.org/img/wn/02d@2x.png" alt="" id='hourlyIconImg3' />
+                                        <h5 className='text-white font-bold text-lg'><span id='hourlyTempThree'>7</span>&deg;C</h5>
                                     </div>
-                                    <div className="box bg-white/[0.2] rounded-lg py-2 px-6">
-                                        <p className='text-white/[0.6] font-semibold'>06:00</p>
-                                        <img src={Cloud} alt="" />
-                                        <h5 className='text-white font-bold text-lg'>7 C</h5>
+                                    <div className="box bg-white/[0.3] backdrop-blur-sm rounded-lg py-2 px-5">
+                                        <p className='text-white/[0.6] font-semibold' id='hourlyTimeFour'>04:00 AM</p>
+                                        <img src="https://openweathermap.org/img/wn/02d@2x.png" alt="" id='hourlyIconImg4' />
+                                        <h5 className='text-white font-bold text-lg'><span id='hourlyTempFour'>7</span>&deg;C</h5>
                                     </div>
-                                    <div className="box bg-white/[0.2] rounded-lg py-2 px-6">
-                                        <p className='text-white/[0.6] font-semibold'>06:00</p>
-                                        <img src={Cloud} alt="" />
-                                        <h5 className='text-white font-bold text-lg'>7 C</h5>
-                                    </div>
-                                    <div className="box bg-white/[0.2] rounded-lg py-2 px-6">
-                                        <p className='text-white/[0.6] font-semibold'>06:00</p>
-                                        <img src={Cloud} alt="" />
-                                        <h5 className='text-white font-bold text-lg'>7 C</h5>
+                                    <div className="box bg-white/[0.3] backdrop-blur-sm rounded-lg py-2 px-5">
+                                        <p className='text-white/[0.6] font-semibold' id='hourlyTimeFive'>05:00 AM</p>
+                                        <img src="https://openweathermap.org/img/wn/02d@2x.png" alt="" id='hourlyIconImg5' />
+                                        <h5 className='text-white font-bold text-lg'><span id='hourlyTempFive'>7</span>&deg;C</h5>
                                     </div>
                                 </div>
                             </div>
