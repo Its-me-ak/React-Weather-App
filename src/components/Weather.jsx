@@ -1,6 +1,4 @@
 import React, { useState } from 'react'
-import Cloud from '../assets/cloud.png'
-import Rain from '../assets/rain.png'
 import { FaTemperatureHalf } from "react-icons/fa6";
 import { BiTachometer } from "react-icons/bi";
 import { FaWind } from "react-icons/fa";
@@ -193,7 +191,8 @@ const Weather = () => {
             HourlyTemp4.innerHTML = `${Math.round(oneData.hourly[5].temp)}`
             HourlyTemp5.innerHTML = `${Math.round(oneData.hourly[6].temp)}`
 
-            // Weekly Time
+            // Weekly Weather
+            // 1
             const weekDate1 = document.getElementById('weekDate1');
             const weekDateOne = (getDate(oneData.daily[1].dt, oneData.timezone_offset));
             weekDate1.innerHTML = weekDateOne
@@ -205,13 +204,43 @@ const Weather = () => {
             weekWindOne.innerHTML = `${oneData.daily[1].wind_speed} km/h`;
 
             const weekWeatherIconOne = oneData.daily[1].weather[0].icon;
-            console.log(weekWeatherIconOne);
             const weeklyIconUrlOne = `https://openweathermap.org/img/wn/${weekWeatherIconOne}@2x.png`
             const weeklyIconImgOne = document.getElementById('weekWeatherIcon1');
             weeklyIconImgOne.src = weeklyIconUrlOne
 
             const weekWeatherOne = document.getElementById('weekWeather1')
             weekWeatherOne.innerHTML = oneData.daily[1].weather[0].description
+
+            const weekCloudOne = document.getElementById('weekCloud1')
+            weekCloudOne.innerHTML = `${oneData.daily[1].clouds}%`
+
+            const weekHumidityOne = document.getElementById('weekHumidity1')
+            weekHumidityOne.innerHTML = `${oneData.daily[1].humidity}%`
+
+            // 2
+            const weekDate2 = document.getElementById('weekDate2');
+            const weekDateTwo = (getDate(oneData.daily[2].dt, oneData.timezone_offset));
+            weekDate2.innerHTML = weekDateTwo
+
+            const weekTempTwo = document.getElementById('weekTemp2')
+            weekTempTwo.innerHTML = Math.round(oneData.daily[2].temp.min);
+
+            const weekWindTwo = document.getElementById('weekWind2');
+            weekWindTwo.innerHTML = `${oneData.daily[2].wind_speed} km/h`;
+
+            const weekWeatherIconTwo = oneData.daily[2].weather[0].icon;
+            const weeklyIconUrlTwo = `https://openweathermap.org/img/wn/${weekWeatherIconTwo}@2x.png`
+            const weeklyIconImgTwo = document.getElementById('weekWeatherIcon2');
+            weeklyIconImgTwo.src = weeklyIconUrlTwo
+
+            const weekWeatherTwo = document.getElementById('weekWeather2')
+            weekWeatherTwo.innerHTML = oneData.daily[2].weather[0].description
+
+            const weekCloudTwo = document.getElementById('weekCloud2')
+            weekCloudTwo.innerHTML = `${oneData.daily[2].clouds}%`
+
+            const weekHumidityTwo = document.getElementById('weekHumidity2')
+            weekHumidityTwo.innerHTML = `${oneData.daily[2].humidity}%`
 
         } catch (error) {
             console.log("city not found ");
@@ -236,7 +265,7 @@ const Weather = () => {
                                 <div className="flex justify-between items-center px-6 py-3 bg-white/[0.3] rounded backdrop-blur-sm">
                                     <div className="location text-center">
                                         <h2 className='text-white uppercase text-[18px] font-bold'><span id='city'>berlin</span>, <span id='country'>De</span></h2>
-                                        <h3 className='text-white/[0.8] text-[15px] font-[600]' id='date'>Monday, 1 jan</h3>
+                                        <h3 className='text-white/[0.8] text-[15px] font-[600]' id='date'>Sunday, 1 jan</h3>
                                         <h4 className='text-white/[0.8] text-[15px] font-[600]' id='time'>12:00:00 AM</h4>
                                     </div>
                                     <div className="temprature text-center">
@@ -330,20 +359,20 @@ const Weather = () => {
                                     </div>
                                     <div className="bottom flex justify-between mt-1 items-center">
                                         <h5 className='text-white/[0.8] font-semibold text-[15px]'> <img src="https://openweathermap.org/img/wn/10d@2x.png" alt="" id='weekWeatherIcon1' /> <span id='weekWeather1' className='capitalize'>Light Rain</span></h5>
-                                        <h5 className='me-16 text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><CiCloudOn /></span> 65%</h5>
-                                        <h5 className='text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><WiHumidity /></span> 82%</h5>
+                                        <h5 className='me-16 text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><CiCloudOn /></span> <span id='weekCloud1'>65%</span></h5>
+                                        <h5 className='text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><WiHumidity /></span><span id='weekHumidity1'>82%</span></h5>
                                     </div>
                                 </div>
                                 <div className="box w-full bg-white/[0.3] backdrop-blur-sm rounded-md px-3 py-1">
                                     <div className="top flex justify-between">
-                                        <h4 className='text-white font-bold text-[16px] capitalize'>tuesday, 3 jan</h4>
-                                        <h4 className='ms-6 text-white font-bold text-[16px] capitalize'><span><FaTemperatureHalf /></span> 7 C</h4>
-                                        <h4 className='text-white font-bold text-[16px] capitalize'><span><FaWind /></span> 2.67 km/h</h4>
+                                        <h4 className='text-white font-bold text-[16px] capitalize' id='weekDate2'>Tuesday, 3 Jan</h4>
+                                        <h4 className='ms-6 text-white font-bold text-[16px] capitalize'><span><FaTemperatureHalf /></span> <span id='weekTemp2'>7</span>&deg;C</h4>
+                                        <h4 className='text-white font-bold text-[16px] capitalize' id='weekWind2'><span><FaWind /></span> 2.67 km/h</h4>
                                     </div>
                                     <div className="bottom flex justify-between mt-1 items-center">
-                                        <h5 className='text-white/[0.8] font-semibold text-[15px]capitalize'><img src="https://openweathermap.org/img/wn/10d@2x.png" alt="" />Light Rain</h5>
-                                        <h5 className='me-16 text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><CiCloudOn /></span> 65%</h5>
-                                        <h5 className='text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><WiHumidity /></span> 82%</h5>
+                                        <h5 className='text-white/[0.8] font-semibold text-[15px]'> <img src="https://openweathermap.org/img/wn/10d@2x.png" alt="" id='weekWeatherIcon2' /> <span id='weekWeather2' className='capitalize'>Light Rain</span></h5>
+                                        <h5 className='me-16 text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><CiCloudOn /></span> <span id='weekCloud2'>65%</span></h5>
+                                        <h5 className='text-white font-semibold text-[16px] capitalize' ><span className='text-[20px]'><WiHumidity /></span> <span id='weekHumidity2'>82%</span></h5>
                                     </div>
                                 </div>
                                 <div className="box w-full bg-white/[0.3] backdrop-blur-sm rounded-md px-3 py-1">
