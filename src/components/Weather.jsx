@@ -83,7 +83,7 @@ const Weather = () => {
             const url = `https://openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`
             const response = await fetch(url);
             const data = await response.json()
-            console.log(data);
+            // console.log(data);
             const citylon = data.coord.lon;
             const citylat = data.coord.lat;
             const oneUrl = `https://openweathermap.org/data/2.5/onecall?lat=${citylat}&lon=${citylon}&units=metric&appid=${apiKey}`;
@@ -194,11 +194,24 @@ const Weather = () => {
             HourlyTemp5.innerHTML = `${Math.round(oneData.hourly[6].temp)}`
 
             // Weekly Time
-            let weektime = (getTime(oneData.daily[1].dt, oneData.timezone_offset))
-            console.log(weektime);
-            const weekdate = (getDate(oneData.daily[1].dt, oneData.timezone_offset));
-            console.log(weekdate);
+            const weekDate1 = document.getElementById('weekDate1');
+            const weekDateOne = (getDate(oneData.daily[1].dt, oneData.timezone_offset));
+            weekDate1.innerHTML = weekDateOne
 
+            const weekTempOne = document.getElementById('weekTemp1')
+            weekTempOne.innerHTML = Math.round(oneData.daily[1].temp.min);
+
+            const weekWindOne = document.getElementById('weekWind1');
+            weekWindOne.innerHTML = `${oneData.daily[1].wind_speed} km/h`;
+
+            const weekWeatherIconOne = oneData.daily[1].weather[0].icon;
+            console.log(weekWeatherIconOne);
+            const weeklyIconUrlOne = `https://openweathermap.org/img/wn/${weekWeatherIconOne}@2x.png`
+            const weeklyIconImgOne = document.getElementById('weekWeatherIcon1');
+            weeklyIconImgOne.src = weeklyIconUrlOne
+
+            const weekWeatherOne = document.getElementById('weekWeather1')
+            weekWeatherOne.innerHTML = oneData.daily[1].weather[0].description
 
         } catch (error) {
             console.log("city not found ");
@@ -311,12 +324,12 @@ const Weather = () => {
                             <div className="flex weekly gap-2 flex-col">
                                 <div className="box w-full bg-white/[0.3] backdrop-blur-sm rounded-md px-3 py-1">
                                     <div className="top flex justify-between">
-                                        <h4 className='text-white font-bold text-[16px] capitalize'>monday, 2 Jan</h4>
-                                        <h4 className='ms-6 text-white font-bold text-[16px] capitalize'><span><FaTemperatureHalf /></span> 7 C</h4>
-                                        <h4 className='text-white font-bold text-[16px] capitalize'><span><FaWind /></span> 2.67 km/h</h4>
+                                        <h4 className='text-white font-bold text-[16px] capitalize' id='weekDate1'>monday, 2 Jan</h4>
+                                        <h4 className='ms-6 text-white font-bold text-[16px] capitalize'><span><FaTemperatureHalf /></span> <span id='weekTemp1'>7</span>&deg;C</h4>
+                                        <h4 className='text-white font-bold text-[16px] capitalize' id='weekWind1'><span><FaWind /></span> 2.67 km/h</h4>
                                     </div>
                                     <div className="bottom flex justify-between mt-1 items-center">
-                                        <h5 className='text-white/[0.8] font-semibold text-[15px]'> <img src="https://openweathermap.org/img/wn/10n@2x.png" alt="" /> Light Rain</h5>
+                                        <h5 className='text-white/[0.8] font-semibold text-[15px]'> <img src="https://openweathermap.org/img/wn/10d@2x.png" alt="" id='weekWeatherIcon1' /> <span id='weekWeather1' className='capitalize'>Light Rain</span></h5>
                                         <h5 className='me-16 text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><CiCloudOn /></span> 65%</h5>
                                         <h5 className='text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><WiHumidity /></span> 82%</h5>
                                     </div>
@@ -328,7 +341,7 @@ const Weather = () => {
                                         <h4 className='text-white font-bold text-[16px] capitalize'><span><FaWind /></span> 2.67 km/h</h4>
                                     </div>
                                     <div className="bottom flex justify-between mt-1 items-center">
-                                        <h5 className='text-white/[0.8] font-semibold text-[15px]capitalize'><img src="https://openweathermap.org/img/wn/10n@2x.png" alt="" />Light Rain</h5>
+                                        <h5 className='text-white/[0.8] font-semibold text-[15px]capitalize'><img src="https://openweathermap.org/img/wn/10d@2x.png" alt="" />Light Rain</h5>
                                         <h5 className='me-16 text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><CiCloudOn /></span> 65%</h5>
                                         <h5 className='text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><WiHumidity /></span> 82%</h5>
                                     </div>
@@ -340,7 +353,7 @@ const Weather = () => {
                                         <h4 className='text-white font-bold text-[16px] capitalize'><span><FaWind /></span> 2.67 km/h</h4>
                                     </div>
                                     <div className="bottom flex justify-between mt-1 items-center">
-                                        <h5 className='text-white/[0.8] font-semibold text-[15px] capitalize'><img src="https://openweathermap.org/img/wn/10n@2x.png" alt="" /> Light Rain</h5>
+                                        <h5 className='text-white/[0.8] font-semibold text-[15px] capitalize'><img src="https://openweathermap.org/img/wn/10d@2x.png" alt="" /> Light Rain</h5>
                                         <h5 className='me-16 text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><CiCloudOn /></span> 65%</h5>
                                         <h5 className='text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><WiHumidity /></span> 82%</h5>
                                     </div>
@@ -352,7 +365,7 @@ const Weather = () => {
                                         <h4 className='text-white font-bold text-[16px] capitalize'><span><FaWind /></span> 2.67 km/h</h4>
                                     </div>
                                     <div className="bottom flex justify-between mt-1 items-center">
-                                        <h5 className='text-white/[0.8] font-semibold text-[15px]capitalize'><img src="https://openweathermap.org/img/wn/10n@2x.png" alt="" /> Light Rain</h5>
+                                        <h5 className='text-white/[0.8] font-semibold text-[15px]capitalize'><img src="https://openweathermap.org/img/wn/10d@2x.png" alt="" /> Light Rain</h5>
                                         <h5 className='me-16 text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><CiCloudOn /></span> 65%</h5>
                                         <h5 className='text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><WiHumidity /></span> 82%</h5>
                                     </div>
@@ -364,7 +377,7 @@ const Weather = () => {
                                         <h4 className='text-white font-bold text-[16px] capitalize'><span><FaWind /></span> 2.67 km/h</h4>
                                     </div>
                                     <div className="bottom flex justify-between mt-1 items-center">
-                                        <h5 className='text-white/[0.8] font-semibold text-[15px]capitalize'><img src="https://openweathermap.org/img/wn/10n@2x.png" alt="" /> Light Rain</h5>
+                                        <h5 className='text-white/[0.8] font-semibold text-[15px]capitalize'><img src="https://openweathermap.org/img/wn/10d@2x.png" alt="" /> Light Rain</h5>
                                         <h5 className='me-16 text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><CiCloudOn /></span> 65%</h5>
                                         <h5 className='text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><WiHumidity /></span> 82%</h5>
                                     </div>
@@ -376,23 +389,23 @@ const Weather = () => {
                                         <h4 className='text-white font-bold text-[16px] capitalize'><span><FaWind /></span> 2.67 km/h</h4>
                                     </div>
                                     <div className="bottom flex justify-between mt-1 items-center">
-                                        <h5 className='text-white/[0.8] font-semibold text-[15px] capitalize'><img src="https://openweathermap.org/img/wn/10n@2x.png" alt="" />Light Rain</h5>
+                                        <h5 className='text-white/[0.8] font-semibold text-[15px] capitalize'><img src="https://openweathermap.org/img/wn/10d@2x.png" alt="" />Light Rain</h5>
                                         <h5 className='me-16 text-white font-semiboldtext-[16px] capitalize'><span className='text-[20px]'><CiCloudOn /></span> 65%</h5>
                                         <h5 className='text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><WiHumidity /></span> 82%</h5>
                                     </div>
                                 </div>
-                                <div className="box w-full bg-white/[0.3] backdrop-blur-sm rounded-md px-3 py-1">
+                                {/* <div className="box w-full bg-white/[0.3] backdrop-blur-sm rounded-md px-3 py-1">
                                     <div className="top flex justify-between">
                                         <h4 className='text-white font-bold text-[16px] capitalize'>sunday, 7 jan</h4>
                                         <h4 className='ms-6 text-white font-bold text-[16px] capitalize'><span><FaTemperatureHalf /></span> 7 C</h4>
                                         <h4 className='text-white font-bold text-[16px] capitalize'><span><FaWind /></span> 2.67 km/h</h4>
                                     </div>
                                     <div className="bottom flex justify-between mt-1 items-center">
-                                        <h5 className='text-white/[0.8] font-semibold text-[15px] capitalize'><img src="https://openweathermap.org/img/wn/10n@2x.png" alt="" /> Light Rain</h5>
+                                        <h5 className='text-white/[0.8] font-semibold text-[15px] capitalize'><img src="https://openweathermap.org/img/wn/10d@2x.png" alt="" /> Light Rain</h5>
                                         <h5 className='me-16 text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><CiCloudOn /></span> 65%</h5>
                                         <h5 className='text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><WiHumidity /></span> 82%</h5>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
 
                         </div>
