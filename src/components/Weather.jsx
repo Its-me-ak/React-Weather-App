@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import Loader from './Loader';
 import { FaTemperatureHalf } from "react-icons/fa6";
 import { BiTachometer } from "react-icons/bi";
 import { FaWind } from "react-icons/fa";
@@ -10,6 +11,7 @@ import SearchIcon from '../assets/search.png'
 import { DateTime } from 'luxon';
 
 const Weather = () => {
+    const [ loader, setLoader ] = useState(false)
     const weekDayNames = [
         "Sunday",
         "Monday",
@@ -69,15 +71,16 @@ const Weather = () => {
             return 0;
         }
         // if ((event?.key === "Enter" || event === "searchButton") && searchQuery?.length > 0) {
-        //     navigate(`/searchResult/${searchQuery}`)
-        // }
-
-        // const FormatToLocalTime = (secs, zone, format = "cccc, dd LLL yyyy ' | Local time: hh:mm a'") => DateTime.fromSeconds(secs).setZone(zone).toFormat(format);
-        // console.log(FormatToLocalTime);
-
-
-        try {
-            const cityName = element?.value;
+            //     navigate(`/searchResult/${searchQuery}`)
+            // }
+            
+            // const FormatToLocalTime = (secs, zone, format = "cccc, dd LLL yyyy ' | Local time: hh:mm a'") => DateTime.fromSeconds(secs).setZone(zone).toFormat(format);
+            // console.log(FormatToLocalTime);
+            
+            
+            try {
+                const cityName = element?.value;
+                setLoader(true)
             const url = `https://openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`
             const response = await fetch(url);
             const data = await response.json()
@@ -90,6 +93,7 @@ const Weather = () => {
             console.log(oneData);
             const date = (getDate(oneData.current.dt, oneData.timezone_offset));
             const time = (getTime(oneData.current.dt, oneData.timezone_offset));
+            setLoader(false)
 
 
             // Image Icon
@@ -341,8 +345,9 @@ const Weather = () => {
 
             const weekHumiditySix = document.getElementById('weekHumidity6')
             weekHumiditySix.innerHTML = `${oneData.daily[6].humidity}%`
-
-        } catch (error) {
+          
+        } 
+        catch (error) {
             console.log("city not found ");
             alert("city not Found")
         }
@@ -350,196 +355,187 @@ const Weather = () => {
     return (
         <>
             <div className="main-bg pt-5 pb-2">
-                <div className="container my-0 mx-auto">
-                    <div className="input w-full flex items-center bg-white">
-                        <input type="text" className='w-full bg-white p-[10px] outline-none border-none rounded text-[#777] city-input' placeholder='Berlin, DE' />
-                        <div className="search-icon pe-4 cursor-pointer" onClick={Search} >
-                            <img src={SearchIcon} alt="" />
+                {loader ? <Loader /> :
+                    <div className="container my-0 mx-auto">
+                        <div>
+                            <div className="input w-full flex items-center bg-white">
+                                <input type="text" className='w-full bg-white p-[10px] outline-none border-none rounded text-[#777] city-input' placeholder='Berlin, DE' />
+                                <div className="search-icon pe-4 cursor-pointer" onClick={Search} >
+                                    <img src={SearchIcon} alt="" />
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-10 mt-5">
+                                <div className="weather">
+                                    <div className="current-weather">
+                                        <h3 className='text-center text-white/[0.9] text-[22px] uppercase font-bold mb-1'>current weather</h3>
+                                        <div className="flex justify-between items-center px-6 py-3 bg-white/[0.3] rounded backdrop-blur-sm">
+                                            <div className="location text-center">
+                                                <h2 className='text-white uppercase text-[18px] font-bold'><span id='city'>berlin</span>, <span id='country'>De</span></h2>
+                                                <h3 className='text-white/[0.8] text-[15px] font-[600]' id='date'>Sunday, 1 jan</h3>
+                                                <h4 className='text-white/[0.8] text-[15px] font-[600]' id='time'>12:00:00 AM</h4>
+                                            </div>
+                                            <div className="temprature text-center">
+                                                <h3 className='text-white font-bold text-2xl'> <span id='temp'>7</span>°C</h3>
+                                                <p className='font-[600] text-white/[0.8] text-[15px] capitalize' id='description'>few clouds</p>
+                                            </div>
+                                            <div className="image">
+                                                <img src="https://openweathermap.org/img/wn/02d@2x.png" alt="" id='iconImg' />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="weather-details mt-6">
+
+                                        <div className="grid grid-cols-4 gap-5 px-0 py-3 bg-white/[0.3] rounded all columns-4 backdrop-blur-sm">
+                                            <div className="real-feel text-center">
+                                                <p className='font-semibold text-[16px] text-white/[0.6]'><span className='pe-1 text-[20px]'><FaTemperatureHalf /></span>Real Feel</p>
+                                                <h5 className='text-white font-bold text-[18px]'><span id='weatherFeel'>5</span> &deg;C</h5>
+                                            </div>
+                                            <div className="wind">
+                                                <p className='font-semibold text-[16px] text-white/[0.6]'><span className='pe-1 text-[20px]'><FaWind /></span>Wind</p>
+                                                <h5 className='text-white font-bold text-[18px]'><span id='wind'>3.09</span> KM/H</h5>
+                                            </div>
+                                            <div className="cloud">
+                                                <p className='font-semibold text-[16px] text-white/[0.6]'><span className='pe-1 text-[20px]'><CiCloudOn /></span>Clouds</p>
+                                                <h5 className='text-white font-bold text-[18px]' id='cloud'>75%</h5>
+                                            </div>
+                                            <div className="humidity">
+                                                <p className='font-semibold text-[16px] text-white/[0.6]'><span className='pe-1 text-[20px]'><WiHumidity /></span>Humidity</p>
+                                                <h5 className='text-white font-bold text-[18px]' id='humidity'>90%</h5>
+                                            </div>
+                                            <div className="rain">
+                                                <p className='font-semibold text-[16px] text-white/[0.6]'><span className='pe-1 text-[20px]'><BiTachometer /></span>Pressure</p>
+                                                <h5 className='text-white font-bold text-[18px]' id='pressure'>1035hPa</h5>
+                                            </div>
+                                            <div className="visibility">
+                                                <p className='font-semibold text-[16px] text-white/[0.6]'><span className='pe-1 text-[20px]'><MdVisibility /></span>Visibility</p>
+                                                <h5 className='text-white font-bold text-[18px]' id='visibility'>10 KM</h5>
+                                            </div>
+                                            <div className="sunrise">
+                                                <p className='font-semibold text-[16px] text-white/[0.6]'><span className='pe-1 text-[20px]'><FiSunrise /></span>Sunrise</p>
+                                                <h5 className='text-white font-bold text-[18px]' id='sunrise'>6:40 AM</h5>
+                                            </div>
+                                            <div className="sunset">
+                                                <p className='font-semibold text-[16px] text-white/[0.6]'><span className='pe-1 text-[20px]'><FiSunset /></span>Sunset</p>
+                                                <h5 className='text-white font-bold text-[18px]' id='sunset'>7:20 PM</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="today-forcast text-center mt-6">
+                                        <h3 className='text-center text-white/[0.9] text-[22px] uppercase font-bold'>hourly forcast</h3>
+                                        <div className="flex gap-4 mt-3">
+                                            <div className="box bg-white/[0.3] rounded-lg py-2 px-5 backdrop-blur-sm">
+                                                <p className='text-white/[0.6] font-semibold' id='hourlyTimeOne'>01:00 AM</p>
+                                                <img src="https://openweathermap.org/img/wn/02d@2x.png" id='hourlyIconImg1' alt="" />
+                                                <h5 className='text-white font-bold text-lg'><span id='hourlyTempOne'>7</span>&deg;C</h5>
+                                            </div>
+                                            <div className="box bg-white/[0.3] rounded-lg py-2 px-5 backdrop-blur-sm">
+                                                <p className='text-white/[0.6] font-semibold' id='hourlyTimeTwo'>02:00 AM</p>
+                                                <img src="https://openweathermap.org/img/wn/02d@2x.png" alt="" id='hourlyIconImg2' />
+                                                <h5 className='text-white font-bold text-lg'><span id='hourlyTempTwo'>7</span>&deg;C</h5>
+                                            </div>
+                                            <div className="box bg-white/[0.3] rounded-lg py-2 px-5 backdrop-blur-sm">
+                                                <p className='text-white/[0.6] font-semibold' id='hourlyTimeThree'>03:00 AM</p>
+                                                <img src="https://openweathermap.org/img/wn/02d@2x.png" alt="" id='hourlyIconImg3' />
+                                                <h5 className='text-white font-bold text-lg'><span id='hourlyTempThree'>7</span>&deg;C</h5>
+                                            </div>
+                                            <div className="box bg-white/[0.3] backdrop-blur-sm rounded-lg py-2 px-5">
+                                                <p className='text-white/[0.6] font-semibold' id='hourlyTimeFour'>04:00 AM</p>
+                                                <img src="https://openweathermap.org/img/wn/02d@2x.png" alt="" id='hourlyIconImg4' />
+                                                <h5 className='text-white font-bold text-lg'><span id='hourlyTempFour'>7</span>&deg;C</h5>
+                                            </div>
+                                            <div className="box bg-white/[0.3] backdrop-blur-sm rounded-lg py-2 px-5">
+                                                <p className='text-white/[0.6] font-semibold' id='hourlyTimeFive'>05:00 AM</p>
+                                                <img src="https://openweathermap.org/img/wn/02d@2x.png" alt="" id='hourlyIconImg5' />
+                                                <h5 className='text-white font-bold text-lg'><span id='hourlyTempFive'>7</span>&deg;C</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="weekly-forcast">
+                                    <h3 className='text-center text-white/[0.9] text-[22px] uppercase font-bold mb-1'>weekly forcast</h3>
+
+                                    <div className="flex weekly gap-2 flex-col">
+                                        <div className="box w-full bg-white/[0.3] backdrop-blur-sm rounded-md px-3 py-1">
+                                            <div className="top flex justify-between">
+                                                <h4 className='text-white font-bold text-[16px] capitalize' id='weekDate1'>monday, 2 Jan</h4>
+                                                <h4 className='ms-6 text-white font-bold text-[16px] capitalize'><span><FaTemperatureHalf /></span> <span id='weekTemp1'>7</span>&deg;C</h4>
+                                                <h4 className='text-white font-bold text-[16px] capitalize' id='weekWind1'><span><FaWind /></span> 2.67 km/h</h4>
+                                            </div>
+                                            <div className="bottom flex justify-between mt-1 items-center">
+                                                <h5 className='text-white/[0.8] font-semibold text-[15px]'> <img src="https://openweathermap.org/img/wn/10d@2x.png" alt="" id='weekWeatherIcon1' /> <span id='weekWeather1' className='capitalize'>Light Rain</span></h5>
+                                                <h5 className='me-16 text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><CiCloudOn /></span> <span id='weekCloud1'>65%</span></h5>
+                                                <h5 className='text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><WiHumidity /></span><span id='weekHumidity1'>82%</span></h5>
+                                            </div>
+                                        </div>
+                                        <div className="box w-full bg-white/[0.3] backdrop-blur-sm rounded-md px-3 py-1">
+                                            <div className="top flex justify-between">
+                                                <h4 className='text-white font-bold text-[16px] capitalize' id='weekDate2'>Tuesday, 3 Jan</h4>
+                                                <h4 className='ms-6 text-white font-bold text-[16px] capitalize'><span><FaTemperatureHalf /></span> <span id='weekTemp2'>7</span>&deg;C</h4>
+                                                <h4 className='text-white font-bold text-[16px] capitalize' id='weekWind2'><span><FaWind /></span> 2.67 km/h</h4>
+                                            </div>
+                                            <div className="bottom flex justify-between mt-1 items-center">
+                                                <h5 className='text-white/[0.8] font-semibold text-[15px]'> <img src="https://openweathermap.org/img/wn/10d@2x.png" alt="" id='weekWeatherIcon2' /> <span id='weekWeather2' className='capitalize'>Light Rain</span></h5>
+                                                <h5 className='me-16 text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><CiCloudOn /></span> <span id='weekCloud2'>65%</span></h5>
+                                                <h5 className='text-white font-semibold text-[16px] capitalize' ><span className='text-[20px]'><WiHumidity /></span> <span id='weekHumidity2'>82%</span></h5>
+                                            </div>
+                                        </div>
+                                        <div className="box w-full bg-white/[0.3] backdrop-blur-sm rounded-md px-3 py-1">
+                                            <div className="top flex justify-between">
+                                                <h4 className='text-white font-bold text-[16px] capitalize' id='weekDate3'>Tuesday, 3 Jan</h4>
+                                                <h4 className='ms-6 text-white font-bold text-[16px] capitalize'><span><FaTemperatureHalf /></span> <span id='weekTemp3'>7</span>&deg;C</h4>
+                                                <h4 className='text-white font-bold text-[16px] capitalize' id='weekWind3'><span><FaWind /></span> 2.67 km/h</h4>
+                                            </div>
+                                            <div className="bottom flex justify-between mt-1 items-center">
+                                                <h5 className='text-white/[0.8] font-semibold text-[15px]'> <img src="https://openweathermap.org/img/wn/10d@2x.png" alt="" id='weekWeatherIcon3' /> <span id='weekWeather3' className='capitalize'>Light Rain</span></h5>
+                                                <h5 className='me-16 text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><CiCloudOn /></span> <span id='weekCloud3'>65%</span></h5>
+                                                <h5 className='text-white font-semibold text-[16px] capitalize' ><span className='text-[20px]'><WiHumidity /></span> <span id='weekHumidity3'>82%</span></h5>
+                                            </div>
+                                        </div>
+                                        <div className="box w-full bg-white/[0.3] backdrop-blur-sm rounded-md px-3 py-1">
+                                            <div className="top flex justify-between">
+                                                <h4 className='text-white font-bold text-[16px] capitalize' id='weekDate4'>Tuesday, 3 Jan</h4>
+                                                <h4 className='ms-6 text-white font-bold text-[16px] capitalize'><span><FaTemperatureHalf /></span> <span id='weekTemp4'>7</span>&deg;C</h4>
+                                                <h4 className='text-white font-bold text-[16px] capitalize' id='weekWind4'><span><FaWind /></span> 2.67 km/h</h4>
+                                            </div>
+                                            <div className="bottom flex justify-between mt-1 items-center">
+                                                <h5 className='text-white/[0.8] font-semibold text-[15px]'> <img src="https://openweathermap.org/img/wn/10d@2x.png" alt="" id='weekWeatherIcon4' /> <span id='weekWeather4' className='capitalize'>Light Rain</span></h5>
+                                                <h5 className='me-16 text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><CiCloudOn /></span> <span id='weekCloud4'>65%</span></h5>
+                                                <h5 className='text-white font-semibold text-[16px] capitalize' ><span className='text-[20px]'><WiHumidity /></span> <span id='weekHumidity4'>82%</span></h5>
+                                            </div>
+                                        </div>
+                                        <div className="box w-full bg-white/[0.3] backdrop-blur-sm rounded-md px-3 py-1">
+                                            <div className="top flex justify-between">
+                                                <h4 className='text-white font-bold text-[16px] capitalize' id='weekDate5'>Tuesday, 3 Jan</h4>
+                                                <h4 className='ms-6 text-white font-bold text-[16px] capitalize'><span><FaTemperatureHalf /></span> <span id='weekTemp5'>7</span>&deg;C</h4>
+                                                <h4 className='text-white font-bold text-[16px] capitalize' id='weekWind5'><span><FaWind /></span> 2.67 km/h</h4>
+                                            </div>
+                                            <div className="bottom flex justify-between mt-1 items-center">
+                                                <h5 className='text-white/[0.8] font-semibold text-[15px]'> <img src="https://openweathermap.org/img/wn/10d@2x.png" alt="" id='weekWeatherIcon5' /> <span id='weekWeather5' className='capitalize'>Light Rain</span></h5>
+                                                <h5 className='me-16 text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><CiCloudOn /></span> <span id='weekCloud5'>65%</span></h5>
+                                                <h5 className='text-white font-semibold text-[16px] capitalize' ><span className='text-[20px]'><WiHumidity /></span> <span id='weekHumidity5'>82%</span></h5>
+                                            </div>
+                                        </div>
+                                        <div className="box w-full bg-white/[0.3] backdrop-blur-sm rounded-md px-3 py-1">
+                                            <div className="top flex justify-between">
+                                                <h4 className='text-white font-bold text-[16px] capitalize' id='weekDate6'>Tuesday, 3 Jan</h4>
+                                                <h4 className='ms-6 text-white font-bold text-[16px] capitalize'><span><FaTemperatureHalf /></span> <span id='weekTemp6'>7</span>&deg;C</h4>
+                                                <h4 className='text-white font-bold text-[16px] capitalize' id='weekWind6'><span><FaWind /></span> 2.67 km/h</h4>
+                                            </div>
+                                            <div className="bottom flex justify-between mt-1 items-center">
+                                                <h5 className='text-white/[0.8] font-semibold text-[15px]'> <img src="https://openweathermap.org/img/wn/10d@2x.png" alt="" id='weekWeatherIcon6' /> <span id='weekWeather6' className='capitalize'>Light Rain</span></h5>
+                                                <h5 className='me-16 text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><CiCloudOn /></span> <span id='weekCloud6'>65%</span></h5>
+                                                <h5 className='text-white font-semibold text-[16px] capitalize' ><span className='text-[20px]'><WiHumidity /></span> <span id='weekHumidity6'>82%</span></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-                    <div className="grid grid-cols-2 gap-10 mt-5">
-                        <div className="weather">
-                            <div className="current-weather">
-                                <h3 className='text-center text-white/[0.9] text-[22px] uppercase font-bold mb-1'>current weather</h3>
-                                <div className="flex justify-between items-center px-6 py-3 bg-white/[0.3] rounded backdrop-blur-sm">
-                                    <div className="location text-center">
-                                        <h2 className='text-white uppercase text-[18px] font-bold'><span id='city'>berlin</span>, <span id='country'>De</span></h2>
-                                        <h3 className='text-white/[0.8] text-[15px] font-[600]' id='date'>Sunday, 1 jan</h3>
-                                        <h4 className='text-white/[0.8] text-[15px] font-[600]' id='time'>12:00:00 AM</h4>
-                                    </div>
-                                    <div className="temprature text-center">
-                                        <h3 className='text-white font-bold text-2xl'> <span id='temp'>7</span>°C</h3>
-                                        <p className='font-[600] text-white/[0.8] text-[15px] capitalize' id='description'>few clouds</p>
-                                    </div>
-                                    <div className="image">
-                                        <img src="https://openweathermap.org/img/wn/02d@2x.png" alt="" id='iconImg' />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="weather-details mt-6">
-                                {/* <h3 className='text-center text-white/[0.9] text-[22px] uppercase font-bold mb-1'>weather details</h3> */}
-                                <div className="grid grid-cols-4 gap-5 px-0 py-3 bg-white/[0.3] rounded all columns-4 backdrop-blur-sm">
-                                    <div className="real-feel text-center">
-                                        <p className='font-semibold text-[16px] text-white/[0.6]'><span className='pe-1 text-[20px]'><FaTemperatureHalf /></span>Real Feel</p>
-                                        <h5 className='text-white font-bold text-[18px]'><span id='weatherFeel'>5</span> &deg;C</h5>
-                                    </div>
-                                    <div className="wind">
-                                        <p className='font-semibold text-[16px] text-white/[0.6]'><span className='pe-1 text-[20px]'><FaWind /></span>Wind</p>
-                                        <h5 className='text-white font-bold text-[18px]'><span id='wind'>3.09</span> KM/H</h5>
-                                    </div>
-                                    <div className="cloud">
-                                        <p className='font-semibold text-[16px] text-white/[0.6]'><span className='pe-1 text-[20px]'><CiCloudOn /></span>Clouds</p>
-                                        <h5 className='text-white font-bold text-[18px]' id='cloud'>75%</h5>
-                                    </div>
-                                    <div className="humidity">
-                                        <p className='font-semibold text-[16px] text-white/[0.6]'><span className='pe-1 text-[20px]'><WiHumidity /></span>Humidity</p>
-                                        <h5 className='text-white font-bold text-[18px]' id='humidity'>90%</h5>
-                                    </div>
-                                    <div className="rain">
-                                        <p className='font-semibold text-[16px] text-white/[0.6]'><span className='pe-1 text-[20px]'><BiTachometer /></span>Pressure</p>
-                                        <h5 className='text-white font-bold text-[18px]' id='pressure'>1035hPa</h5>
-                                    </div>
-                                    <div className="visibility">
-                                        <p className='font-semibold text-[16px] text-white/[0.6]'><span className='pe-1 text-[20px]'><MdVisibility /></span>Visibility</p>
-                                        <h5 className='text-white font-bold text-[18px]' id='visibility'>10 KM</h5>
-                                    </div>
-                                    <div className="sunrise">
-                                        <p className='font-semibold text-[16px] text-white/[0.6]'><span className='pe-1 text-[20px]'><FiSunrise /></span>Sunrise</p>
-                                        <h5 className='text-white font-bold text-[18px]' id='sunrise'>6:40 AM</h5>
-                                    </div>
-                                    <div className="sunset">
-                                        <p className='font-semibold text-[16px] text-white/[0.6]'><span className='pe-1 text-[20px]'><FiSunset /></span>Sunset</p>
-                                        <h5 className='text-white font-bold text-[18px]' id='sunset'>7:20 PM</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="today-forcast text-center mt-6">
-                                <h3 className='text-center text-white/[0.9] text-[22px] uppercase font-bold'>hourly forcast</h3>
-                                {/* <p className='font-semibold text-[16px] text-white/[0.6]'>5 Available Forcast</p> */}
-                                <div className="flex gap-4 mt-3">
-                                    <div className="box bg-white/[0.3] rounded-lg py-2 px-5 backdrop-blur-sm">
-                                        <p className='text-white/[0.6] font-semibold' id='hourlyTimeOne'>01:00 AM</p>
-                                        <img src="https://openweathermap.org/img/wn/02d@2x.png" id='hourlyIconImg1' alt="" />
-                                        <h5 className='text-white font-bold text-lg'><span id='hourlyTempOne'>7</span>&deg;C</h5>
-                                    </div>
-                                    <div className="box bg-white/[0.3] rounded-lg py-2 px-5 backdrop-blur-sm">
-                                        <p className='text-white/[0.6] font-semibold' id='hourlyTimeTwo'>02:00 AM</p>
-                                        <img src="https://openweathermap.org/img/wn/02d@2x.png" alt="" id='hourlyIconImg2' />
-                                        <h5 className='text-white font-bold text-lg'><span id='hourlyTempTwo'>7</span>&deg;C</h5>
-                                    </div>
-                                    <div className="box bg-white/[0.3] rounded-lg py-2 px-5 backdrop-blur-sm">
-                                        <p className='text-white/[0.6] font-semibold' id='hourlyTimeThree'>03:00 AM</p>
-                                        <img src="https://openweathermap.org/img/wn/02d@2x.png" alt="" id='hourlyIconImg3' />
-                                        <h5 className='text-white font-bold text-lg'><span id='hourlyTempThree'>7</span>&deg;C</h5>
-                                    </div>
-                                    <div className="box bg-white/[0.3] backdrop-blur-sm rounded-lg py-2 px-5">
-                                        <p className='text-white/[0.6] font-semibold' id='hourlyTimeFour'>04:00 AM</p>
-                                        <img src="https://openweathermap.org/img/wn/02d@2x.png" alt="" id='hourlyIconImg4' />
-                                        <h5 className='text-white font-bold text-lg'><span id='hourlyTempFour'>7</span>&deg;C</h5>
-                                    </div>
-                                    <div className="box bg-white/[0.3] backdrop-blur-sm rounded-lg py-2 px-5">
-                                        <p className='text-white/[0.6] font-semibold' id='hourlyTimeFive'>05:00 AM</p>
-                                        <img src="https://openweathermap.org/img/wn/02d@2x.png" alt="" id='hourlyIconImg5' />
-                                        <h5 className='text-white font-bold text-lg'><span id='hourlyTempFive'>7</span>&deg;C</h5>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="weekly-forcast">
-                            <h3 className='text-center text-white/[0.9] text-[22px] uppercase font-bold mb-1'>weekly forcast</h3>
-
-                            <div className="flex weekly gap-2 flex-col">
-                                <div className="box w-full bg-white/[0.3] backdrop-blur-sm rounded-md px-3 py-1">
-                                    <div className="top flex justify-between">
-                                        <h4 className='text-white font-bold text-[16px] capitalize' id='weekDate1'>monday, 2 Jan</h4>
-                                        <h4 className='ms-6 text-white font-bold text-[16px] capitalize'><span><FaTemperatureHalf /></span> <span id='weekTemp1'>7</span>&deg;C</h4>
-                                        <h4 className='text-white font-bold text-[16px] capitalize' id='weekWind1'><span><FaWind /></span> 2.67 km/h</h4>
-                                    </div>
-                                    <div className="bottom flex justify-between mt-1 items-center">
-                                        <h5 className='text-white/[0.8] font-semibold text-[15px]'> <img src="https://openweathermap.org/img/wn/10d@2x.png" alt="" id='weekWeatherIcon1' /> <span id='weekWeather1' className='capitalize'>Light Rain</span></h5>
-                                        <h5 className='me-16 text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><CiCloudOn /></span> <span id='weekCloud1'>65%</span></h5>
-                                        <h5 className='text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><WiHumidity /></span><span id='weekHumidity1'>82%</span></h5>
-                                    </div>
-                                </div>
-                                <div className="box w-full bg-white/[0.3] backdrop-blur-sm rounded-md px-3 py-1">
-                                    <div className="top flex justify-between">
-                                        <h4 className='text-white font-bold text-[16px] capitalize' id='weekDate2'>Tuesday, 3 Jan</h4>
-                                        <h4 className='ms-6 text-white font-bold text-[16px] capitalize'><span><FaTemperatureHalf /></span> <span id='weekTemp2'>7</span>&deg;C</h4>
-                                        <h4 className='text-white font-bold text-[16px] capitalize' id='weekWind2'><span><FaWind /></span> 2.67 km/h</h4>
-                                    </div>
-                                    <div className="bottom flex justify-between mt-1 items-center">
-                                        <h5 className='text-white/[0.8] font-semibold text-[15px]'> <img src="https://openweathermap.org/img/wn/10d@2x.png" alt="" id='weekWeatherIcon2' /> <span id='weekWeather2' className='capitalize'>Light Rain</span></h5>
-                                        <h5 className='me-16 text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><CiCloudOn /></span> <span id='weekCloud2'>65%</span></h5>
-                                        <h5 className='text-white font-semibold text-[16px] capitalize' ><span className='text-[20px]'><WiHumidity /></span> <span id='weekHumidity2'>82%</span></h5>
-                                    </div>
-                                </div>
-                                <div className="box w-full bg-white/[0.3] backdrop-blur-sm rounded-md px-3 py-1">
-                                    <div className="top flex justify-between">
-                                        <h4 className='text-white font-bold text-[16px] capitalize' id='weekDate3'>Tuesday, 3 Jan</h4>
-                                        <h4 className='ms-6 text-white font-bold text-[16px] capitalize'><span><FaTemperatureHalf /></span> <span id='weekTemp3'>7</span>&deg;C</h4>
-                                        <h4 className='text-white font-bold text-[16px] capitalize' id='weekWind3'><span><FaWind /></span> 2.67 km/h</h4>
-                                    </div>
-                                    <div className="bottom flex justify-between mt-1 items-center">
-                                        <h5 className='text-white/[0.8] font-semibold text-[15px]'> <img src="https://openweathermap.org/img/wn/10d@2x.png" alt="" id='weekWeatherIcon3' /> <span id='weekWeather3' className='capitalize'>Light Rain</span></h5>
-                                        <h5 className='me-16 text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><CiCloudOn /></span> <span id='weekCloud3'>65%</span></h5>
-                                        <h5 className='text-white font-semibold text-[16px] capitalize' ><span className='text-[20px]'><WiHumidity /></span> <span id='weekHumidity3'>82%</span></h5>
-                                    </div>
-                                </div>
-                                <div className="box w-full bg-white/[0.3] backdrop-blur-sm rounded-md px-3 py-1">
-                                    <div className="top flex justify-between">
-                                        <h4 className='text-white font-bold text-[16px] capitalize' id='weekDate4'>Tuesday, 3 Jan</h4>
-                                        <h4 className='ms-6 text-white font-bold text-[16px] capitalize'><span><FaTemperatureHalf /></span> <span id='weekTemp4'>7</span>&deg;C</h4>
-                                        <h4 className='text-white font-bold text-[16px] capitalize' id='weekWind4'><span><FaWind /></span> 2.67 km/h</h4>
-                                    </div>
-                                    <div className="bottom flex justify-between mt-1 items-center">
-                                        <h5 className='text-white/[0.8] font-semibold text-[15px]'> <img src="https://openweathermap.org/img/wn/10d@2x.png" alt="" id='weekWeatherIcon4' /> <span id='weekWeather4' className='capitalize'>Light Rain</span></h5>
-                                        <h5 className='me-16 text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><CiCloudOn /></span> <span id='weekCloud4'>65%</span></h5>
-                                        <h5 className='text-white font-semibold text-[16px] capitalize' ><span className='text-[20px]'><WiHumidity /></span> <span id='weekHumidity4'>82%</span></h5>
-                                    </div>
-                                </div>
-                                <div className="box w-full bg-white/[0.3] backdrop-blur-sm rounded-md px-3 py-1">
-                                    <div className="top flex justify-between">
-                                        <h4 className='text-white font-bold text-[16px] capitalize' id='weekDate5'>Tuesday, 3 Jan</h4>
-                                        <h4 className='ms-6 text-white font-bold text-[16px] capitalize'><span><FaTemperatureHalf /></span> <span id='weekTemp5'>7</span>&deg;C</h4>
-                                        <h4 className='text-white font-bold text-[16px] capitalize' id='weekWind5'><span><FaWind /></span> 2.67 km/h</h4>
-                                    </div>
-                                    <div className="bottom flex justify-between mt-1 items-center">
-                                        <h5 className='text-white/[0.8] font-semibold text-[15px]'> <img src="https://openweathermap.org/img/wn/10d@2x.png" alt="" id='weekWeatherIcon5' /> <span id='weekWeather5' className='capitalize'>Light Rain</span></h5>
-                                        <h5 className='me-16 text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><CiCloudOn /></span> <span id='weekCloud5'>65%</span></h5>
-                                        <h5 className='text-white font-semibold text-[16px] capitalize' ><span className='text-[20px]'><WiHumidity /></span> <span id='weekHumidity5'>82%</span></h5>
-                                    </div>
-                                </div>
-                                <div className="box w-full bg-white/[0.3] backdrop-blur-sm rounded-md px-3 py-1">
-                                    <div className="top flex justify-between">
-                                        <h4 className='text-white font-bold text-[16px] capitalize' id='weekDate6'>Tuesday, 3 Jan</h4>
-                                        <h4 className='ms-6 text-white font-bold text-[16px] capitalize'><span><FaTemperatureHalf /></span> <span id='weekTemp6'>7</span>&deg;C</h4>
-                                        <h4 className='text-white font-bold text-[16px] capitalize' id='weekWind6'><span><FaWind /></span> 2.67 km/h</h4>
-                                    </div>
-                                    <div className="bottom flex justify-between mt-1 items-center">
-                                        <h5 className='text-white/[0.8] font-semibold text-[15px]'> <img src="https://openweathermap.org/img/wn/10d@2x.png" alt="" id='weekWeatherIcon6' /> <span id='weekWeather6' className='capitalize'>Light Rain</span></h5>
-                                        <h5 className='me-16 text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><CiCloudOn /></span> <span id='weekCloud6'>65%</span></h5>
-                                        <h5 className='text-white font-semibold text-[16px] capitalize' ><span className='text-[20px]'><WiHumidity /></span> <span id='weekHumidity6'>82%</span></h5>
-                                    </div>
-                                </div>
-                                {/* <div className="box w-full bg-white/[0.3] backdrop-blur-sm rounded-md px-3 py-1">
-                                    <div className="top flex justify-between">
-                                        <h4 className='text-white font-bold text-[16px] capitalize'>sunday, 7 jan</h4>
-                                        <h4 className='ms-6 text-white font-bold text-[16px] capitalize'><span><FaTemperatureHalf /></span> 7 C</h4>
-                                        <h4 className='text-white font-bold text-[16px] capitalize'><span><FaWind /></span> 2.67 km/h</h4>
-                                    </div>
-                                    <div className="bottom flex justify-between mt-1 items-center">
-                                        <h5 className='text-white/[0.8] font-semibold text-[15px] capitalize'><img src="https://openweathermap.org/img/wn/10d@2x.png" alt="" /> Light Rain</h5>
-                                        <h5 className='me-16 text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><CiCloudOn /></span> 65%</h5>
-                                        <h5 className='text-white font-semibold text-[16px] capitalize'><span className='text-[20px]'><WiHumidity /></span> 82%</h5>
-                                    </div>
-                                </div> */}
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
+                }
             </div>
         </>
     )
