@@ -1,23 +1,32 @@
 import './App.css';
 import { useEffect, useState } from 'react';
 import Weather from './components/Weather';
-import GetOpenWeatherData from './WeatherService';
-import Loader from './components/Loader';
+import { GetFormetedWeatherData } from './WeatherService';
+
 
 
 function App() {
-  const  [loader, setLoader] = useState(false);
+  const [weather, setWeather] = useState(null);
+  const [hourlyWeather, setHourlyWeather] = useState(null)
+  const [city, setCity] = useState("london")
   useEffect(() => {
     const FetchWeatherData = async () => {
-      setLoader(true)
-      await GetOpenWeatherData();
-      setLoader(false);
+      const data = await GetFormetedWeatherData(city);
+      console.log(data);
+      setWeather(data)
+      const HourlyData = data.hourly
+      console.log(HourlyData);
+      setHourlyWeather(HourlyData)
     }
     FetchWeatherData()
   }, [])
+
   return (
     <div className="App">
-      {loader ? <Loader /> : <Weather />}
+      {weather && (
+        <Weather weather={weather}  hourlyWeather={hourlyWeather} />
+      )
+      }
     </div>
   );
 }
