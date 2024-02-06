@@ -1,15 +1,15 @@
 import React from 'react'
 
 const HourlyWeather = ({ hourlyWeather }) => {
-// const HourlyData = [
-//     {
-//         id:2,
-//         time: hourlyWeather[2].dt,
-//         temprature: `${hourlyWeather[2].temp.toFixed()}°C`,
-//         icon: hourlyWeather[2].weather[0].icon
-//     }
-// ]
-// console.log(HourlyData);
+const HourlyData = 
+    {
+        id:2,
+        time: hourlyWeather[2].dt,
+        temprature: `${hourlyWeather[2].temp.toFixed()}°C`,
+        icon: hourlyWeather[2].weather[0].icon
+    }
+
+console.log(HourlyData);
   return (
     <>
           <div className="today-forcast text-center mt-6">

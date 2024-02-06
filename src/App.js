@@ -15,7 +15,7 @@ function App() {
       console.log(data);
       setWeather(data)
       const HourlyData = data.hourly
-      console.log(HourlyData);
+      // console.log(HourlyData);
       setHourlyWeather(HourlyData)
     }
     FetchWeatherData()

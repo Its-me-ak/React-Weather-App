@@ -5,7 +5,7 @@ import HourlyWeather from './HourlyWeather';
 import WeeklyWeather from './WeeklyWeather';
 import { GetFormetedWeatherData } from '../WeatherService';
 
-const Weather = ({weather}) => {
+const Weather = ({ weather, hourlyWeather }) => {
     return (
         <>
             <div className="main-bg pt-5 pb-2">
@@ -20,7 +20,7 @@ const Weather = ({weather}) => {
                     <div className="grid grid-cols-2 gap-10 mt-5">
                         <div className="weather">
                             <CurrentWeather weather={weather} />
-                            <HourlyWeather />
+                            <HourlyWeather hourlyWeather={hourlyWeather}/>
                         </div>
                         <WeeklyWeather />
                     </div>
