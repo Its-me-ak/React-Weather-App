@@ -73,14 +73,13 @@ const GetFormetedWeatherData = async (city, units = "metric") => {
     // Second Method With Simple Async Await
     // const response = await fetch(url);
     // const data = await response.json()
-
     const citylon = data.coord.lon;
     const citylat = data.coord.lat;
     const oneUrl = `https://openweathermap.org/data/2.5/onecall?lat=${citylat}&lon=${citylon}&units=metric&appid=${apiKey}`;
     const oneData = await fetch(oneUrl)
         .then((oneRes) => oneRes.json())
         .then((oneData) => oneData)
-    console.log(oneData);
+    // console.log(oneData);
     const date = (getDate(oneData.current.dt, oneData.timezone_offset));
     const time = (getTime(oneData.current.dt, oneData.timezone_offset));
 
@@ -97,22 +96,30 @@ const GetFormetedWeatherData = async (city, units = "metric") => {
 
     const {
         current: { clouds },
-        hourly
-     } = oneData
+        hourly, daily
+    } = oneData
+
+    let timePhase1 = (getTime(oneData.hourly[2].dt, oneData.timezone_offset));
+    let timePhase2 = (getTime(oneData.hourly[3].dt, oneData.timezone_offset));
+    let timePhase3 = (getTime(oneData.hourly[4].dt, oneData.timezone_offset));
+    let timePhase4 = (getTime(oneData.hourly[5].dt, oneData.timezone_offset));
+    let timePhase5 = (getTime(oneData.hourly[6].dt, oneData.timezone_offset));
+
+    const weekDateOne = (getDate(oneData.daily[1].dt, oneData.timezone_offset));
+    const weekDateTwo = (getDate(oneData.daily[2].dt, oneData.timezone_offset));
+    const weekDateThree = (getDate(oneData.daily[3].dt, oneData.timezone_offset));
+    const weekDateFour = (getDate(oneData.daily[4].dt, oneData.timezone_offset));
+    const weekDateFive = (getDate(oneData.daily[5].dt, oneData.timezone_offset));
+    const weekDateSix = (getDate(oneData.daily[6].dt, oneData.timezone_offset));
+
+
 
     return {
         name, visibility, temp, humidity, pressure, feels_like, speed, country, Sunrise, Sunset, description, lon, lat,
         iconURL: MakeIconURL(icon),
-        date, time, clouds, hourly
+        date, time, clouds, hourly, timePhase1, timePhase2, timePhase3, timePhase4, timePhase5,
+        daily,  weekDateOne, weekDateTwo, weekDateThree, weekDateFour, weekDateFive, weekDateSix
     }
-
-    //     // Image Icon
-    //     const { weather } = data;
-    //     const icon = weather[0].icon
-    //     const iconUrl = `https://openweathermap.org/img/wn/${icon}@2x.png`
-    //     const iconImg = document.getElementById('iconImg');
-    //     iconImg.src = iconUrl
-
 
     //     //  Weather Description and Temperature
     //     const City = document.getElementById("city");
@@ -146,64 +153,6 @@ const GetFormetedWeatherData = async (city, units = "metric") => {
     //     Visibility.innerHTML = `${(oneData.current.visibility) / 1000} KM`;
     //     SunriseTime.innerHTML = Sunrise;
     //     SunsetTime.innerHTML = Sunset;
-
-    //     // Hourly Forcast Time
-    //     let timePhase1 = (getTime(oneData.hourly[2].dt, oneData.timezone_offset));
-    //     let timePhase2 = (getTime(oneData.hourly[3].dt, oneData.timezone_offset));
-    //     let timePhase3 = (getTime(oneData.hourly[4].dt, oneData.timezone_offset));
-    //     let timePhase4 = (getTime(oneData.hourly[5].dt, oneData.timezone_offset));
-    //     let timePhase5 = (getTime(oneData.hourly[6].dt, oneData.timezone_offset));
-
-    //     const HourlyTime1 = document.getElementById('hourlyTimeOne');
-    //     const HourlyTime2 = document.getElementById('hourlyTimeTwo');
-    //     const HourlyTime3 = document.getElementById('hourlyTimeThree');
-    //     const HourlyTime4 = document.getElementById('hourlyTimeFour');
-    //     const HourlyTime5 = document.getElementById('hourlyTimeFive');
-
-    //     HourlyTime1.innerHTML = timePhase1
-    //     HourlyTime2.innerHTML = timePhase2
-    //     HourlyTime3.innerHTML = timePhase3
-    //     HourlyTime4.innerHTML = timePhase4
-    //     HourlyTime5.innerHTML = timePhase5
-
-    //     // Hourly Forcast Icon Image
-    //     const HourlyIconOne = oneData.hourly[2].weather[0].icon;
-    //     const HourlyIconUrlOne = `https://openweathermap.org/img/wn/${HourlyIconOne}@2x.png`
-    //     const hourlyiconImg1 = document.getElementById('hourlyIconImg1');
-    //     hourlyiconImg1.src = HourlyIconUrlOne
-
-    //     const HourlyIconTwo = oneData.hourly[3].weather[0].icon;
-    //     const HourlyIconUrlTwo = `https://openweathermap.org/img/wn/${HourlyIconTwo}@2x.png`
-    //     const hourlyiconImg2 = document.getElementById('hourlyIconImg2');
-    //     hourlyiconImg2.src = HourlyIconUrlTwo
-
-    //     const HourlyIconThree = oneData.hourly[4].weather[0].icon;
-    //     const HourlyIconUrlThree = `https://openweathermap.org/img/wn/${HourlyIconThree}@2x.png`
-    //     const hourlyiconImg3 = document.getElementById('hourlyIconImg3');
-    //     hourlyiconImg3.src = HourlyIconUrlThree
-
-    //     const HourlyIconOFour = oneData.hourly[5].weather[0].icon;
-    //     const HourlyIconUrlFour = `https://openweathermap.org/img/wn/${HourlyIconOFour}@2x.png`
-    //     const hourlyiconImg4 = document.getElementById('hourlyIconImg4');
-    //     hourlyiconImg4.src = HourlyIconUrlFour
-
-    //     const HourlyIconOneFive = oneData.hourly[6].weather[0].icon;
-    //     const HourlyIconUrlFive = `https://openweathermap.org/img/wn/${HourlyIconOneFive}@2x.png`
-    //     const hourlyiconImg5 = document.getElementById('hourlyIconImg5');
-    //     hourlyiconImg5.src = HourlyIconUrlFive
-
-    //     // Hourly Temprature
-    //     const HourlyTemp1 = document.getElementById('hourlyTempOne');
-    //     const HourlyTemp2 = document.getElementById('hourlyTempTwo')
-    //     const HourlyTemp3 = document.getElementById('hourlyTempThree')
-    //     const HourlyTemp4 = document.getElementById('hourlyTempFour')
-    //     const HourlyTemp5 = document.getElementById('hourlyTempFive')
-
-    //     HourlyTemp1.innerHTML = `${Math.round(oneData.hourly[2].temp)}`
-    //     HourlyTemp2.innerHTML = `${Math.round(oneData.hourly[3].temp)}`
-    //     HourlyTemp3.innerHTML = `${Math.round(oneData.hourly[4].temp)}`
-    //     HourlyTemp4.innerHTML = `${Math.round(oneData.hourly[5].temp)}`
-    //     HourlyTemp5.innerHTML = `${Math.round(oneData.hourly[6].temp)}`
 
     //     // Weekly Weather
     //     // 1

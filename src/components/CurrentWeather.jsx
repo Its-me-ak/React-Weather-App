@@ -12,7 +12,7 @@ const CurrentWeather = ({ weather }) => {
         <>
             <div className="current-weather">
                 <h3 className='text-center text-white/[0.9] text-[22px] uppercase font-bold mb-1'>current weather</h3>
-                <div className="flex justify-between items-center px-6 py-3 bg-white/[0.3] rounded backdrop-blur-sm">
+                <div className="flex justify-between items-center px-3 py-3 bg-white/[0.3] rounded backdrop-blur-sm">
                     <div className="location text-center">
                         <h2 className='text-white uppercase text-[18px] font-bold'>{weather.name}, {weather.country}</h2>
                         <h3 className='text-white/[0.8] text-[15px] font-[600]' >{weather.date}</h3>
@@ -29,7 +29,7 @@ const CurrentWeather = ({ weather }) => {
             </div>
 
             <div className="weather-details mt-6">
-                <div className="grid grid-cols-4 gap-5 px-0 py-3 bg-white/[0.3] rounded all columns-4 backdrop-blur-sm">
+                <div className="grid grid-cols-3 sm:grid-cols-4 gap-5 px-0 py-3 bg-white/[0.3] rounded all columns-4 backdrop-blur-sm">
                     <div className="real-feel text-center">
                         <p className='font-semibold text-[16px] text-white/[0.6]'><span className='pe-1 text-[20px]'><FaTemperatureHalf /></span>Real Feel</p>
                         <h5 className='text-white font-bold text-[18px]'>{`${weather.feels_like.toFixed()}°C`}</h5>

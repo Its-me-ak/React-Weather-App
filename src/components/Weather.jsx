@@ -3,9 +3,8 @@ import SearchIcon from '../assets/search.png'
 import CurrentWeather from './CurrentWeather';
 import HourlyWeather from './HourlyWeather';
 import WeeklyWeather from './WeeklyWeather';
-import { GetFormetedWeatherData } from '../WeatherService';
 
-const Weather = ({ weather, hourlyWeather }) => {
+const Weather = ({ weather, hourlyWeather, dailyWeather }) => {
     return (
         <>
             <div className="main-bg pt-5 pb-2">
@@ -17,12 +16,12 @@ const Weather = ({ weather, hourlyWeather }) => {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-10 mt-5">
+                    <div className="grid lg:grid-cols-2 grid-cols-1 gap-10 mt-5">
                         <div className="weather">
                             <CurrentWeather weather={weather} />
-                            <HourlyWeather hourlyWeather={hourlyWeather}/>
+                            <HourlyWeather hourlyWeather={hourlyWeather} weather={weather}/>
                         </div>
-                        <WeeklyWeather />
+                        <WeeklyWeather  dailyWeather={dailyWeather} weather={weather} />
                     </div>
                 </div>
             </div>
