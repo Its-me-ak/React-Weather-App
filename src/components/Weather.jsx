@@ -4,7 +4,12 @@ import CurrentWeather from './CurrentWeather';
 import HourlyWeather from './HourlyWeather';
 import WeeklyWeather from './WeeklyWeather';
 
-const Weather = ({ weather, hourlyWeather, dailyWeather }) => {
+const Weather = ({ weather, hourlyWeather, dailyWeather, setCity }) => {
+    const handleChange = () => {
+        const input = document.querySelector(".city-input");
+        const cityName = input.value;
+        setCity(cityName)
+    }
     return (
         <>
             <div className="main-bg pt-5 pb-2">
@@ -12,7 +17,7 @@ const Weather = ({ weather, hourlyWeather, dailyWeather }) => {
                     <div className="input w-full flex items-center bg-white">
                         <input type="text" className='w-full bg-white p-[10px] outline-none border-none rounded text-[#777] city-input' placeholder='Berlin, DE' />
                         <div className="search-icon pe-4 cursor-pointer">
-                            <img src={SearchIcon} alt="" />
+                            <img src={SearchIcon} alt="" onClick={handleChange} />
                         </div>
                     </div>
 

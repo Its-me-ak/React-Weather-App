@@ -79,7 +79,7 @@ const GetFormetedWeatherData = async (city, units = "metric") => {
     const oneData = await fetch(oneUrl)
         .then((oneRes) => oneRes.json())
         .then((oneData) => oneData)
-    // console.log(oneData);
+    console.log(oneData);
     const date = (getDate(oneData.current.dt, oneData.timezone_offset));
     const time = (getTime(oneData.current.dt, oneData.timezone_offset));
 
