@@ -9,7 +9,7 @@ function App() {
   const [weather, setWeather] = useState(null);
   const [hourlyWeather, setHourlyWeather] = useState(null)
   const [dailyWeather, setDailyWeather] = useState(null)
-  const [city, setCity] = useState("Delhi")
+  const [city, setCity] = useState("London")
   useEffect(() => {
     const FetchWeatherData = async () => {
       const data = await GetFormetedWeatherData(city);
