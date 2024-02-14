@@ -1,5 +1,5 @@
 import './App.css';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState} from 'react';
 import Weather from './components/Weather';
 import { GetFormetedWeatherData } from './WeatherService';
 import Loader from './components/Loader';
@@ -20,10 +20,9 @@ function App() {
       const data = await GetFormetedWeatherData(city);
       console.log(data);
       setWeather(data)
-      const HourlyData = data.hourly
+      const HourlyData = data?.hourly
       setHourlyWeather(HourlyData)
-      const DailyData = data.daily
-      // console.log(DailyData);
+      const DailyData = data?.daily
       setDailyWeather(DailyData)
       setLoader(false)
     }
