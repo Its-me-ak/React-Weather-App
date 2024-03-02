@@ -1,3 +1,4 @@
+import { toast, Bounce } from "react-toastify";
 
 const weekDayNames = [
     "Sunday",
@@ -113,7 +114,9 @@ const GetFormetedWeatherData = async (city) => {
             daily, weekDateOne, weekDateTwo, weekDateThree, weekDateFour, weekDateFive, weekDateSix
         }
     } catch (error) {
-        alert('Wrong City, Please enter a valid city');
+        toast.error('Wrong City, Please enter a valid city name !', {
+        transition: Bounce,
+        });
     }
 }
 

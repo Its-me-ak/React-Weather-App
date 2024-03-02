@@ -1,23 +1,23 @@
 import React from 'react'
-import { Vortex } from 'react-loader-spinner'
+import { CirclesWithBar } from 'react-loader-spinner'
 
 const Loader = () => {
   return (
     <>
-      <div className="body top-0 left-0 z-10 bg-black/[0.7]">
-            <div className="box w-56 py-6 bg-white text-center">
-                  <Vortex
-                      visible={true}
-                      height="80"
-                      width="80"
-                      ariaLabel="vortex-loading"
-                      wrapperStyle={{}}
-                      wrapperClass="vortex-wrapper"
-                      colors={['red', 'green', 'blue', 'yellow', 'orange', 'purple']}
-                  />
-                  <h3>Fetching Weather Data</h3>
-            </div>
-      </div>
+      <div className="body top-0 left-0 z-10 bg-black/[0.8] flex justify-center items-center">
+          <CirclesWithBar
+            height="100"
+            width="100"
+            color="#4fa94d"
+            outerCircleColor="#4fa94d"
+            innerCircleColor="#4fa94d"
+            barColor="#4fa94d"
+            ariaLabel="circles-with-bar-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
+            visible={true}
+          />
+        </div>
     </>
   )
 }
